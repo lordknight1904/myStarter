@@ -32,15 +32,13 @@ export function facebookLogin() {
       console.log('action');
       console.log(user);
       let userInfo = {
-        firstName: user.user.displayName.substr(0,user.user.displayName.indexOf(' ')),
-        lastName: user.user.displayName.substr(user.user.displayName.indexOf(' ')+1,
-          user.user.displayName.length-user.user.displayName.indexOf(' ')),
+        name: user.user.displayName,
         email: user.user.email,
         avatar: user.user.photoURL,
         idSocial: user.user.uid,
         accessToken: user.credential.accessToken,
       };
-      return callApi('ser/auth', 'post', {userInfo}).then(res => dispatch(signInSucceed(res.user)));
+      return callApi('user/auth', 'post', {userInfo}).then(res => dispatch(signInSucceed(res.user)));
     });
   };
 }

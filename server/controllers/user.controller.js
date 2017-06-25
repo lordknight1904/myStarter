@@ -1,7 +1,12 @@
 import User from '../models/user';
-import firebase from '../util/firebase';
-const firebaseApp = firebase.app();
 export function authUser (req, res) {
   console.log(req.body.userInfo);
-  res.json({user: req.body.userInfo});
+  const retUser = {
+    id : req.body.userInfo.idSocial,
+    name : req.body.userInfo.name,
+    token : req.body.userInfo.accessToken,
+    email : req.body.userInfo.email,
+    avatar : req.body.userInfo.avatar,
+  };
+  res.json({user: retUser});
 }

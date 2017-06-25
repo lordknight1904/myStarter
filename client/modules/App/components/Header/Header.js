@@ -8,6 +8,8 @@ import MenuItem from 'material-ui/MenuItem';
 import styles from './Header.css';
 import logo from './logo.png';
 
+import { facebookLogin } from '../../AppActions';
+
 class Header extends Component{
   constructor(props){
     super(props);
@@ -19,7 +21,6 @@ class Header extends Component{
   }
   handleClickOpenLogin = (e) => {
     e.preventDefault();
-    console.log('click');
     this.setState({openLogin: true});
   };
   handleClickWhenOpenLogin = (e) =>{
@@ -44,6 +45,10 @@ class Header extends Component{
     this.props.switchLanguage(this.props.intl.enabledLanguages[value]);
     // onClick={() => props.switchLanguage(lang)}
     // className={lang === props.intl.locale ? styles.selected : ''}>{lang}/>
+  };
+  handleClick = () => {
+    console.log('facebook');
+    this.props.dispatch(facebookLogin());
   };
   render(){
     const languageNodes =
@@ -112,7 +117,7 @@ class Header extends Component{
                 <span className="login_or">OR</span>
               </div>
               <div className="login_input-wrap m-t-15">
-                <button className="btn-default btn-fluid login_btn-login-fb">Login with Facebook</button>
+                <button className="btn-default btn-fluid login_btn-login-fb" onClick={this.handleClick}>Login with Facebook</button>
               </div>
 
             </div>
@@ -130,6 +135,7 @@ Header.propTypes = {
   toggleAddPost: PropTypes.func.isRequired,
   switchLanguage: PropTypes.func.isRequired,
   intl: PropTypes.object.isRequired,
+  dispatch: PropTypes.func,
 };
 Header.contextTypes = {
   router: React.PropTypes.object,

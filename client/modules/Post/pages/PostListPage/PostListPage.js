@@ -60,8 +60,6 @@ PostListPage.propTypes = {
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
   })).isRequired,
-  showAddPost: PropTypes.bool.isRequired,
-  dispatch: PropTypes.func.isRequired,
 };
 
 PostListPage.contextTypes = {
