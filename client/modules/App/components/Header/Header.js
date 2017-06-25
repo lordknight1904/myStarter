@@ -1,6 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage } from 'react-intl';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 // Import Style
 import styles from './Header.css';
@@ -10,42 +12,52 @@ class Header extends Component{
   constructor(props){
     super(props);
     this.state = {
-      openLogin: false
-    }
-    this.handleClickOpenLogin = this.handleClickOpenLogin.bind(this);
+      openLogin: false,
+      value: 0,
+    };
+    // this.handleClickOpenLogin = this.handleClickOpenLogin.bind(this);
   }
-  renderLanguaNode = () => {
-    this.props.intl.enabledLanguages.map(
-      lang => <li key={lang} onClick={() => this.props.switchLanguage(lang)} className={lang === this.props.intl.locale ? styles.selected : ''}>{lang}</li>
-    );
-  }
-  handleClickOpenLogin(e){
+  handleClickOpenLogin = (e) => {
     e.preventDefault();
     console.log('click');
     this.setState({openLogin: true});
-  }
+  };
   handleClickWhenOpenLogin = (e) =>{
       this.loginWrap.contains(e.target) || this.btnLogin.contains(e.target)
         ? this.setState({openLogin: true})
         : this.setState({openLogin: false});
-  }
-  bodyWhenLoginOpen(){
+  };
+  bodyWhenLoginOpen() {
     document.getElementsByTagName("body")[0].style.overflow = this.state.openLogin ? 'hidden' : 'initial';
   }
-  componentDidUpdate(){
+
+  componentDidUpdate() {
     this.bodyWhenLoginOpen();
   }
-  componentDidMount(){
+
+  componentDidMount() {
     window.addEventListener('click', this.handleClickWhenOpenLogin, false);
   }
+
+  handleChange = (event, index, value) => {
+    this.setState({value});
+    this.props.switchLanguage(this.props.intl.enabledLanguages[value]);
+    // onClick={() => props.switchLanguage(lang)}
+    // className={lang === props.intl.locale ? styles.selected : ''}>{lang}/>
+  };
   render(){
+    const languageNodes =
+      this.props.intl.enabledLanguages.map((lang, index) => <MenuItem className={lang === this.props.intl.locale ? styles.selected : ''} key={lang} value={index} primaryText={lang} />
+      );
     let props = this.props;
     return (
       <div className={styles.header}>
         <div className={styles['language-switcher']}>
           <ul>
             <li><FormattedMessage id="switchLanguage" /></li>
-            {this.renderLanguaNode()}
+            <DropDownMenu value={this.state.value} onChange={this.handleChange}>
+              {languageNodes}
+            </DropDownMenu>
           </ul>
         </div>
         <div className={styles.content}>
@@ -118,6 +130,9 @@ Header.propTypes = {
   toggleAddPost: PropTypes.func.isRequired,
   switchLanguage: PropTypes.func.isRequired,
   intl: PropTypes.object.isRequired,
+};
+Header.contextTypes = {
+  router: React.PropTypes.object,
 };
 
 export default Header;

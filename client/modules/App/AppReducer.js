@@ -1,17 +1,22 @@
 // Import Actions
-import { TOGGLE_ADD_POST } from './AppActions';
+import { ACTIONS } from './AppActions';
 
 // Initial State
 const initialState = {
-  showAddPost: false,
+  id: '',
+  name: '',
+  token: '',
+  email: '',
 };
 
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
-    case TOGGLE_ADD_POST:
-      return {
-        showAddPost: !state.showAddPost,
-      };
+    case ACTIONS.LOGIN_SUCCEED:
+      state.id = action.user.id;
+      state.name = action.user.name;
+      state.token = action.user.token;
+      state.email = action.user.email;
+      return {...state};
 
     default:
       return state;
